@@ -1725,3 +1725,21 @@ img {
     transform: none;
   }
 }
+
+/* ========================================
+   GLOBAL RESET (merged from Person 1)
+   ======================================== */
+
+html,
+body,
+#root {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  min-height: 100vh;
+}
+
+body {
+  background: #0a0c18;
+  font-family: "Inter", "Segoe UI", Arial, sans-serif;
+}
