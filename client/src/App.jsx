@@ -1,122 +1,195 @@
-import { useState } from 'react'
-import heroImg from './assets/hero.png'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import './App.css'
 
-function App() {
-  const [count, setCount] = useState(0)
+import React from "react";
+import {
+  NavLink,
+  Route,
+  Routes,
+  useLocation,
+  useNavigate,
+} from "react-router-dom";
+
+import {
+  Gamepad2,
+  Trophy,
+  Swords,
+  Menu,
+  Zap,
+  ArrowUpRight,
+} from "lucide-react";
+
+import Scrims from "./pages/Scrims.jsx";
+import Tournaments from "./pages/Tournaments.jsx";
+import TournamentDetails from "./pages/TournamentDetails.jsx";
+
+// ========================================
+// HEADER / NAVIGATION
+// ========================================
+
+function Header() {
+  const [open, setOpen] = React.useState(false);
+  const location = useLocation();
+
+  // Close the mobile menu after navigation
+  React.useEffect(() => {
+    setOpen(false);
+  }, [location.pathname]);
 
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
+    <header className="site-header">
+      <div className="nav-shell">
+        {/* Brand logo */}
+        <NavLink to="/" className="brand">
+          <span className="brand-mark">
+            <Zap size={21} fill="currentColor" />
+          </span>
+
+          <span>
+            ESPORTI
+            <span className="brand-accent">FY</span>
+
+            <small>COMPETITIVE ARENA</small>
+          </span>
+        </NavLink>
+
+        {/* Mobile navigation toggle */}
         <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
+          className="mobile-menu"
+          onClick={() => setOpen((value) => !value)}
+          aria-label="Toggle navigation"
+          aria-expanded={open}
         >
-          Count is {count}
+          <Menu size={22} />
         </button>
-      </section>
 
-      <div className="ticks"></div>
+        {/* Navigation links */}
+        <nav className={`main - nav ${open ? "nav-open" : ""} `}>
+          <NavLink
+            to="/"
+            end
+            className={({ isActive }) =>
+              `nav - link ${isActive ? "active" : ""} `
+            }
+          >
+            <Swords size={16} />
+            Scrims
+          </NavLink>
 
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
+          <NavLink
+            to="/tournaments"
+            className={({ isActive }) =>
+              `nav - link ${isActive ||
+                location.pathname.startsWith("/tournaments/")
+                ? "active"
+                : ""
+              } `
+            }
+          >
+            <Trophy size={16} />
+            Tournaments
+          </NavLink>
 
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
+          <a
+            className="nav-link"
+            href="/#how-it-works"
+          >
+            <Gamepad2 size={16} />
+            How it works
+          </a>
+        </nav>
+
+        {/* Call-to-action button */}
+        <NavLink
+          className="nav-cta"
+          to="/tournaments"
+        >
+          Explore arena
+          <ArrowUpRight size={16} />
+        </NavLink>
+      </div>
+    </header>
+  );
 }
 
-export default App
+// ========================================
+// FOOTER
+// ========================================
+
+function Footer() {
+  return (
+    <footer className="site-footer">
+      <div className="footer-inner">
+        <div className="footer-brand">
+          <span className="brand-mark small">
+            <Zap size={16} fill="currentColor" />
+          </span>
+
+          ESPORTIFY
+        </div>
+
+        <p>
+          Built for squads that play to win.{" "}
+          <span>Sample events · Frontend demo</span>
+        </p>
+      </div>
+    </footer>
+  );
+}
+
+// ========================================
+// MAIN APP
+// ========================================
+
+export default function App() {
+  const navigate = useNavigate();
+
+  return (
+    <div className="app-shell">
+      <Header />
+
+      <Routes>
+        {/* Scrims page */}
+        <Route
+          path="/"
+          element={<Scrims />}
+        />
+
+        {/* Tournaments listing page */}
+        <Route
+          path="/tournaments"
+          element={<Tournaments />}
+        />
+
+        {/* Tournament details page */}
+        <Route
+          path="/tournaments/:id"
+          element={<TournamentDetails />}
+        />
+
+        {/* 404 page */}
+        <Route
+          path="*"
+          element={
+            <main className="content-wrap not-found">
+              <span className="eyebrow">
+                404 / LOST IN THE ARENA
+              </span>
+
+              <h1>
+                That page isn't in the lobby.
+              </h1>
+
+              <button
+                className="btn btn-primary"
+                onClick={() => navigate("/")}
+              >
+                Back to scrims
+              </button>
+            </main>
+          }
+        />
+      </Routes>
+
+      <Footer />
+    </div>
+  );
+}
