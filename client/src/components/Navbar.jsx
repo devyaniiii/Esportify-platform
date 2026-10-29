@@ -32,7 +32,7 @@ function Navbar() {
 
                 <div className="nav-buttons">
                     <a href="/login" className="btn btn-outline">Log in</a>
-                    <a href="/signup" className="btn btn-orange">Sign up</a>
+                    <a href="/register" className="btn btn-orange">Register</a>
                 </div>
             </div>
         </header>
