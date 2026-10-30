@@ -52,7 +52,15 @@ function TeamRegistration() {
   const [players, setPlayers] = useState([emptyPlayer, emptyPlayer, emptyPlayer]);
   const [errors, setErrors] = useState({});
 
-  if (!user) return <Navigate to="/login" replace />;
+  if (!user) {
+    return (
+      <Navigate
+        to="/login"
+        replace
+        state={{ from: "/team-registration", event: passed }}
+      />
+    );
+  }
 
   const event = allEvents.find((e) => e.id === eventId) || allEvents[0];
   const isSolo = mode === "solo";

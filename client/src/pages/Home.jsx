@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import "../styles/home.css";
@@ -74,8 +75,8 @@ function Home() {
                         and password on time, and see live standings after every match.
                     </p>
                     <div className="hero-buttons">
-                        <a href="#scrims" className="btn btn-orange big">Book Scrims</a>
-                        <a href="/signup" className="btn btn-outline big">Create your team</a>
+                        <Link to="/scrims" className="btn btn-orange big">Book Scrims</Link>
+                        <Link to="/team-registration" className="btn btn-outline big">Create your team</Link>
                     </div>
                     <div className="stats">
                         <div><strong>1,200+</strong><span>Players</span></div>
@@ -104,7 +105,7 @@ function Home() {
                         <div className="progress">
                             <div className="progress-fill" style={{ width: "72%" }}></div>
                         </div>
-                        <button className="btn btn-light full">Request a slot</button>
+                        <Link to="/scrims" className="btn btn-light full">Request a slot</Link>
                     </div>
                 </div>
             </section>
@@ -135,11 +136,12 @@ function Home() {
                             </div>
                             <h3 className="scrim-title">{s.title}</h3>
                             <p className="scrim-info">{s.info}</p>
-                            <button
+                            <Link
+                                to="/scrims"
                                 className={s.primary ? "btn btn-orange full" : "btn btn-dark full"}
                             >
                                 {s.button}
-                            </button>
+                            </Link>
                         </div>
                     ))}
                 </div>
@@ -161,7 +163,7 @@ function Home() {
                                 <span>{t.date}</span>
                                 <span>{t.teams}</span>
                             </div>
-                            <button className="btn btn-orange full">Register team</button>
+                            <Link to="/tournaments" className="btn btn-orange full">Register team</Link>
                         </div>
                     ))}
                 </div>

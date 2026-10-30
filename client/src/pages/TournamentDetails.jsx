@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Link, useParams } from "react-router-dom";
 import {
@@ -182,17 +181,26 @@ export default function TournamentDetails() {
             </strong>
           </div>
 
-          <button
+          <Link
             className="btn btn-primary booking-button"
-            disabled={!available}
-            onClick={() =>
-              window.alert(
-                `Demo only: registration selected for ${t.title}.No booking or payment has been made.`
-              )
-            }
+            aria-disabled={!available}
+            onClick={(event) => {
+              if (!available) event.preventDefault();
+            }}
+            to="/team-registration"
+            state={{
+              event: {
+                title: t.title,
+                type: "Tournament",
+                date: t.startDate,
+                time: t.time,
+                fee: `₹${t.entryFee}`,
+                left: available,
+              },
+            }}
           >
             {available ? "Book now" : "Slots full"}
-          </button>
+          </Link>
 
           <p className="booking-disclaimer">
             <ShieldCheck size={14} />

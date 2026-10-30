@@ -1,5 +1,5 @@
-
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import {
     ArrowUpRight,
     CalendarDays,
@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 
 export default function ScrimCard({ scrim }) {
+    const navigate = useNavigate();
     // Calculate available slots
     const available = Math.max(0, scrim.slots - scrim.filled);
 
@@ -122,14 +123,23 @@ export default function ScrimCard({ scrim }) {
                 <p>{available} slots remaining</p>
             </div>
 
-            {/* Demo booking button */}
+            {/* Booking requires login before the registration form opens */}
             <button
                 className="btn btn-primary card-action"
                 disabled={!available}
                 onClick={() =>
-                    window.alert(
-                        `Demo only: booking selected for ${scrim.title}.No payment or reservation has been made.`
-                    )
+                    navigate("/team-registration", {
+                        state: {
+                            event: {
+                                title: scrim.title,
+                                type: "Scrim",
+                                date: scrim.date,
+                                time: scrim.time,
+                                fee: `₹${scrim.fee}`,
+                                left: available,
+                            },
+                        },
+                    })
                 }
             >
                 {available ? "Book now" : "Slots full"}

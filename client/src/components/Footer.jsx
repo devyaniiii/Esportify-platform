@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 function Footer() {
     return (
         <footer className="site-footer">
@@ -12,17 +14,17 @@ function Footer() {
 
                 <div>
                     <h4>Quick links</h4>
-                    <a href="#scrims">Scrims</a>
-                    <a href="#tournaments">Tournaments</a>
-                    <a href="#leaderboard">Leaderboard</a>
-                    <a href="#about">About us</a>
+                    <Link to="/scrims">Scrims</Link>
+                    <Link to="/tournaments">Tournaments</Link>
+                    <Link to="/#leaderboard">Leaderboard</Link>
+                    <Link to="/#about">About us</Link>
                 </div>
 
                 <div>
                     <h4>Contact</h4>
                     <p>support@esportify.com</p>
                     <p>+91 00000 00000</p>
-                    <a href="#contact">Send a message</a>
+                    <Link to="/#contact">Send a message</Link>
                 </div>
             </div>
 
@@ -31,7 +33,6 @@ function Footer() {
                     © 2026 Esportify. Unofficial BGMI community platform, not affiliated
                     with Krafton.
                 </p>
-
             </div>
         </footer>
     );

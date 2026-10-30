@@ -1,4 +1,3 @@
-
 import React from "react";
 import {
     ArrowUpRight,
@@ -111,7 +110,7 @@ export default function TournamentCard({ tournament: t }) {
                 <div className="tournament-actions">
                     <Link
                         className="btn btn-secondary"
-                        to={`/ tournaments / ${t.id} `}
+                        to={`/tournaments/${t.id}`}
                     >
                         View details
                         <ArrowUpRight size={15} />
@@ -119,7 +118,17 @@ export default function TournamentCard({ tournament: t }) {
 
                     <Link
                         className="btn btn-primary"
-                        to={`/ tournaments / ${t.id} #register`}
+                        to="/team-registration"
+                        state={{
+                            event: {
+                                title: t.title,
+                                type: "Tournament",
+                                date: t.startDate,
+                                time: t.time,
+                                fee: `₹${t.entryFee}`,
+                                left: available,
+                            },
+                        }}
                     >
                         Book now
                     </Link>
