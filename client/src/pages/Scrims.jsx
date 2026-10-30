@@ -7,7 +7,7 @@ import {
     Swords,
 } from "lucide-react";
 
-import { scrims } from "../data/events.js";
+import { Scrims } from "../data/events.js";
 import EventFilters from "../components/EventFilters.jsx";
 import ScrimCard from "../components/ScrimCard.jsx";
 
