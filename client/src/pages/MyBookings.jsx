@@ -1,13 +1,7 @@
 import { useState } from "react";
 import { Link, Navigate } from "react-router-dom";
+import { getCurrentPlayer } from "../auth.js";
 import "../styles/auth.css";
-
-const getCurrentUser = () => {
-  const email =
-    sessionStorage.getItem("esportify_current") || localStorage.getItem("esportify_current");
-  const users = JSON.parse(localStorage.getItem("esportify_users") || "[]");
-  return users.find((u) => u.email === email) || null;
-};
 
 // Shown to a new user the first time they open this page, so the list isn't empty.
 // Delete this array (and the seeding below) if you want new users to start with nothing.
@@ -20,7 +14,7 @@ const sampleBookings = [
 const filters = ["All", "Tournament", "Scrim"];
 
 function MyBookings() {
-  const [user] = useState(getCurrentUser);
+  const [user] = useState(getCurrentPlayer);
   const storageKey = user ? `esportify_bookings_${user.email}` : "";
 
   const [bookings, setBookings] = useState(() => {
@@ -32,7 +26,7 @@ function MyBookings() {
   });
   const [filter, setFilter] = useState("All");
 
-  if (!user) return <Navigate to="/login" replace />;
+  if (!user) return <Navigate to="/player/login" replace />;
 
   const visible = filter === "All" ? bookings : bookings.filter((b) => b.type === filter);
 
@@ -59,6 +53,7 @@ function MyBookings() {
             <p className="dash-subtitle">Tournaments and scrims booked by {user.username}.</p>
           </div>
           <div className="dash-actions dash-actions-top">
+            <Link to="/player/dashboard" className="dash-btn dash-btn-ghost">Dashboard</Link>
             <Link to="/profile" className="dash-btn dash-btn-ghost">My profile</Link>
             <Link to="/team-registration" className="dash-btn">Book a slot</Link>
           </div>

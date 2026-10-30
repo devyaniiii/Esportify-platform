@@ -1,15 +1,16 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import LoginMenu from "./LoginMenu.jsx";
+import Logo from "./Logo.jsx";
+import { getAdminSession, getCurrentPlayer } from "../auth.js";
 
 function Navbar() {
     const [open, setOpen] = useState(false);
+    const loggedIn = Boolean(getAdminSession() || getCurrentPlayer());
 
     return (
         <header className="navbar">
-            <Link to="/" className="logo" onClick={() => setOpen(false)}>
-                <span className="logo-box">E</span>
-                <span className="logo-text">ESPORTIFY</span>
-            </Link>
+            <Logo onClick={() => setOpen(false)} />
 
             <button
                 className="menu-btn"
@@ -30,8 +31,10 @@ function Navbar() {
                 </nav>
 
                 <div className="nav-buttons">
-                    <Link to="/login" className="btn btn-outline">Log in</Link>
-                    <Link to="/register" className="btn btn-orange">Register</Link>
+                    <LoginMenu />
+                    {!loggedIn && (
+                        <Link to="/player/register" className="btn btn-orange">Register</Link>
+                    )}
                 </div>
             </div>
         </header>

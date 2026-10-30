@@ -5,7 +5,7 @@ import {
     Crosshair,
     ShieldCheck,
     Swords,
-} from "lucide-react";cd client
+} from "lucide-react";
 
 import { scrims } from "../data/events.js";
 import EventFilters from "../components/EventFilters.jsx";

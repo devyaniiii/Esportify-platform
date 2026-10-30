@@ -1,12 +1,12 @@
 
 import React from "react";
 import {
+  Navigate,
   NavLink,
   Outlet,
   Route,
   Routes,
   useLocation,
-  useNavigate,
 } from "react-router-dom";
 
 import {
@@ -18,10 +18,23 @@ import {
   ArrowUpRight,
 } from "lucide-react";
 
-// Teammate 1: Home, authentication, profile and bookings
+// Shared components
+import LoginMenu from "./components/LoginMenu.jsx";
+import Logo from "./components/Logo.jsx";
+import RequireAuth from "./components/RequireAuth.jsx";
+import ScrollManager from "./components/ScrollManager.jsx";
+
+// Player pages
+import PlayerLogin from "./pages/player/PlayerLogin.jsx";
+import PlayerRegister from "./pages/player/PlayerRegister.jsx";
+import PlayerDashboard from "./pages/player/PlayerDashboard.jsx";
+
+// Admin pages
+import AdminLogin from "./pages/admin/AdminLogin.jsx";
+import AdminDashboard from "./pages/admin/AdminDashboard.jsx";
+
+// Teammate 1: Home, profile and bookings
 import Home from "./pages/Home.jsx";
-import Login from "./pages/Login.jsx";
-import Register from "./pages/Register.jsx";
 import Profile from "./pages/Profile.jsx";
 import MyBookings from "./pages/MyBookings.jsx";
 import TeamRegistration from "./pages/TeamRegistration.jsx";
@@ -45,15 +58,7 @@ function Header() {
   return (
     <header className="site-header">
       <div className="nav-shell">
-        <NavLink to="/" className="brand">
-          <span className="brand-mark">
-            <Zap size={21} fill="currentColor" />
-          </span>
-          <span>
-            ESPORTI<span className="brand-accent">FY</span>
-            <small>COMPETITIVE ARENA</small>
-          </span>
-        </NavLink>
+        <Logo />
 
         <button
           className="mobile-menu"
@@ -65,6 +70,16 @@ function Header() {
         </button>
 
         <nav className={`main-nav ${open ? "nav-open" : ""}`}>
+          <NavLink
+            to="/"
+            className={({ isActive }) =>
+              `nav-link ${isActive ? "active" : ""}`
+            }
+          >
+            <Gamepad2 size={16} />
+            Home
+          </NavLink>
+
           <NavLink
             to="/scrims"
             className={({ isActive }) =>
@@ -84,22 +99,15 @@ function Header() {
             <Trophy size={16} />
             Tournaments
           </NavLink>
-
-          <NavLink
-            to="/"
-            className={({ isActive }) =>
-              `nav-link ${isActive ? "active" : ""}`
-            }
-          >
-            <Gamepad2 size={16} />
-            Home
-          </NavLink>
         </nav>
 
-        <NavLink className="nav-cta" to="/tournaments">
-          Explore arena
-          <ArrowUpRight size={16} />
-        </NavLink>
+        <div className="header-actions">
+          <LoginMenu />
+          <NavLink className="nav-cta" to="/tournaments">
+            Explore arena
+            <ArrowUpRight size={16} />
+          </NavLink>
+        </div>
       </div>
     </header>
   );
@@ -136,31 +144,60 @@ function SiteLayout() {
 
 function App() {
   return (
-    <Routes>
-      {/* Home and user account pages */}
-      <Route path="/" element={<Home />} />
-      <Route path="/login" element={<Login />} />
-      <Route path="/register" element={<Register />} />
-      <Route path="/forgot-password" element={<ForgotPassword />} />
-      <Route path="/profile" element={<Profile />} />
-      <Route path="/my-bookings" element={<MyBookings />} />
-      <Route path="/team-registration" element={<TeamRegistration />} />
-      <Route
-        path="/booking-confirmation"
-        element={<BookingConfirmation />}
-      />
+    <>
+      <ScrollManager />
+      <Routes>
+        {/* Public home page */}
+        <Route path="/" element={<Home />} />
 
-      {/* Scrims and tournaments share the navigation and footer */}
-      <Route element={<SiteLayout />}>
-        <Route path="/scrims" element={<Scrims />} />
-        <Route path="/tournaments" element={<Tournaments />} />
+        {/* Old links keep working */}
+        <Route path="/login" element={<Navigate to="/player/login" replace />} />
+        <Route path="/register" element={<Navigate to="/player/register" replace />} />
+
+        {/* Player portal */}
+        <Route path="/player/login" element={<PlayerLogin />} />
+        <Route path="/player/register" element={<PlayerRegister />} />
         <Route
-          path="/tournaments/:id"
-          element={<TournamentDetails />}
+          path="/player/dashboard"
+          element={
+            <RequireAuth role="player">
+              <PlayerDashboard />
+            </RequireAuth>
+          }
         />
-        <Route path="*" element={<NotFound />} />
-      </Route>
-    </Routes>
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/profile" element={<Profile />} />
+        <Route path="/my-bookings" element={<MyBookings />} />
+        <Route path="/team-registration" element={<TeamRegistration />} />
+        <Route
+          path="/booking-confirmation"
+          element={<BookingConfirmation />}
+        />
+
+        {/* Admin portal (separate pages from the player side) */}
+        <Route path="/admin" element={<Navigate to="/admin/dashboard" replace />} />
+        <Route path="/admin/login" element={<AdminLogin />} />
+        <Route
+          path="/admin/dashboard"
+          element={
+            <RequireAuth role="admin">
+              <AdminDashboard />
+            </RequireAuth>
+          }
+        />
+
+        {/* Scrims and tournaments share the navigation and footer */}
+        <Route element={<SiteLayout />}>
+          <Route path="/scrims" element={<Scrims />} />
+          <Route path="/tournaments" element={<Tournaments />} />
+          <Route
+            path="/tournaments/:id"
+            element={<TournamentDetails />}
+          />
+          <Route path="*" element={<NotFound />} />
+        </Route>
+      </Routes>
+    </>
   );
 }
 
