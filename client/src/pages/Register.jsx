@@ -212,7 +212,7 @@ function Register() {
           <p className="auth-switch">
             Already have an account? <Link to="/login">Log in</Link>
           </p>
-        </div>
+        </div><q></q>
       </section>
     </div>
   );
