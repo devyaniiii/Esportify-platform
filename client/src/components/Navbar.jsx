@@ -1,38 +1,40 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
+import LoginMenu from "./LoginMenu.jsx";
+import Logo from "./Logo.jsx";
+import { getAdminSession, getCurrentPlayer } from "../auth.js";
 
 function Navbar() {
     const [open, setOpen] = useState(false);
+    const loggedIn = Boolean(getAdminSession() || getCurrentPlayer());
 
     return (
         <header className="navbar">
-            <a href="/" className="logo">
-                <span className="logo-box">E</span>
-                <span className="logo-text">ESPORTIFY</span>
-            </a>
+            <Logo onClick={() => setOpen(false)} />
 
             <button
                 className="menu-btn"
-                onClick={() => setOpen(!open)}
+                onClick={() => setOpen((value) => !value)}
                 aria-label="Toggle menu"
+                aria-expanded={open}
             >
                 {open ? "✕" : "☰"}
             </button>
 
-            <div
-                className={open ? "nav-menu open" : "nav-menu"}
-                onClick={() => setOpen(false)}
-            >
+            <div className={open ? "nav-menu open" : "nav-menu"} onClick={() => setOpen(false)}>
                 <nav className="nav-links">
-                    <a href="#scrims">Scrims</a>
-                    <a href="#tournaments">Tournaments</a>
-                    <a href="#leaderboard">Leaderboard</a>
-                    <a href="#about">About</a>
-                    <a href="#contact">Contact</a>
+                    <Link to="/scrims">Scrims</Link>
+                    <Link to="/tournaments">Tournaments</Link>
+                    <Link to="/#leaderboard">Leaderboard</Link>
+                    <Link to="/#about">About</Link>
+                    <Link to="/#contact">Contact</Link>
                 </nav>
 
                 <div className="nav-buttons">
-                    <a href="/login" className="btn btn-outline">Log in</a>
-                    <a href="/register" className="btn btn-orange">Register</a>
+                    <LoginMenu />
+                    {!loggedIn && (
+                        <Link to="/player/register" className="btn btn-orange">Register</Link>
+                    )}
                 </div>
             </div>
         </header>

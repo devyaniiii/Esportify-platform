@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, NavLink, useNavigate } from "react-router-dom";
+import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import "../styles/auth.css";
 
 // Sample lobbies for the hero card. Replace with GET /api/scrims later.
@@ -21,6 +21,7 @@ const passwordError = (pw) => {
 
 function Login() {
   const navigate = useNavigate();
+  const location = useLocation();
   const [role, setRole] = useState("player");
   const [form, setForm] = useState({ email: "", password: "", remember: false });
   const [errors, setErrors] = useState({});
@@ -74,8 +75,14 @@ function Login() {
         localStorage.removeItem("esportify_current");
         sessionStorage.removeItem("esportify_current");
         (form.remember ? localStorage : sessionStorage).setItem("esportify_current", found.email);
-        // TODO: when the admin dashboard is ready, send admins to "/admin" instead.
-        navigate(accountType === "admin" ? "/profile" : "/my-bookings");
+        // Return users to the booking flow they requested before login.
+        const returnTo = location.state?.from;
+        const event = location.state?.event;
+        if (returnTo) {
+          navigate(returnTo, { replace: true, state: event ? { event } : undefined });
+        } else {
+          navigate(accountType === "admin" ? "/profile" : "/my-bookings");
+        }
       }
     }, 700);
   };

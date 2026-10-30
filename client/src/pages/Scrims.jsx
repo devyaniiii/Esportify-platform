@@ -9,7 +9,7 @@ import {
 
 import { scrims } from "../data/events.js";
 import EventFilters from "../components/EventFilters.jsx";
-import ScrimCard from "../components/ScrimCard.jsx";
+import ScrimCard from "../components/Scrimcard.jsx";
 
 export default function Scrims() {
     // =========================

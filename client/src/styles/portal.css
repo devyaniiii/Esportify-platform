@@ -1,0 +1,382 @@
+/* =========================================================
+   Login dropdown, Player/Admin portal pages
+   ========================================================= */
+
+/* ---------- Login dropdown (top right of the navbar) ---------- */
+.navbar {
+  position: relative;
+}
+
+.lm {
+  position: relative;
+}
+
+.lm-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border: 1px solid #2b2e4a;
+  border-radius: 8px;
+  background: transparent;
+  color: #f2f3ff;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.2;
+  white-space: nowrap;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.lm-trigger:hover,
+.lm-trigger[aria-expanded="true"] {
+  border-color: #ff7a3d;
+  background: rgba(255, 122, 61, 0.08);
+}
+
+.lm-trigger:focus-visible,
+.lm-item:focus-visible {
+  outline: 2px solid #ff7a3d;
+  outline-offset: 2px;
+}
+
+.lm-label {
+  max-width: 120px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.lm-chevron {
+  transition: transform 0.15s;
+}
+
+.lm-chevron-open {
+  transform: rotate(180deg);
+}
+
+.lm-menu {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  z-index: 200;
+  min-width: 270px;
+  padding: 8px;
+  border: 1px solid #2b2e4a;
+  border-radius: 14px;
+  background: #141830;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.5);
+  text-align: left;
+}
+
+.lm-heading {
+  margin: 4px 10px 6px;
+  color: #a4a8c0;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+
+.lm-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 10px;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  color: #f2f3ff;
+  text-align: left;
+  cursor: pointer;
+}
+
+.lm-item:hover {
+  background: #1f2440;
+}
+
+.lm-item strong {
+  display: block;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.lm-item small {
+  display: block;
+  color: #a4a8c0;
+  font-size: 12px;
+  font-weight: 400;
+}
+
+.lm-icon {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  flex-shrink: 0;
+  border-radius: 10px;
+  background: rgba(255, 122, 61, 0.14);
+  color: #ff7a3d;
+}
+
+.lm-icon-admin {
+  background: rgba(139, 112, 255, 0.16);
+  color: #a995ff;
+}
+
+.lm-icon-danger {
+  background: rgba(255, 122, 138, 0.14);
+  color: #ff7a8a;
+}
+
+@media (max-width: 900px) {
+  .lm {
+    flex: 1;
+  }
+
+  .lm-trigger {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .lm-menu {
+    left: 0;
+    right: 0;
+    min-width: 0;
+  }
+}
+
+/* ---------- Shared bits on auth / dashboard pages ---------- */
+.portal-badge {
+  display: inline-block;
+  margin-bottom: 14px;
+  padding: 4px 12px;
+  border-radius: 999px;
+  background: rgba(255, 122, 61, 0.14);
+  color: var(--auth-orange-soft, #ffb08a);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+
+.portal-badge-admin {
+  background: rgba(139, 112, 255, 0.16);
+  color: #b9a9ff;
+}
+
+.portal-switch {
+  margin: 0;
+  color: var(--auth-muted, #a9aed0);
+  font-size: 0.95rem;
+}
+
+.portal-switch a {
+  color: var(--auth-orange-soft, #ffb08a);
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.portal-demo {
+  margin: 18px 0 0;
+  padding: 10px 14px;
+  border: 1px dashed var(--auth-border, #23284a);
+  border-radius: 10px;
+  color: var(--auth-muted, #a9aed0);
+  font-size: 0.82rem;
+  overflow-wrap: anywhere;
+}
+
+.portal-demo strong {
+  color: var(--auth-text, #f1f2fa);
+}
+
+/* ---------- Dashboards ---------- */
+.portal-heading {
+  margin: 34px 0 14px;
+  font-family: "Rajdhani", sans-serif;
+  font-size: 1.4rem;
+  letter-spacing: 0.5px;
+}
+
+.portal-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  margin-bottom: 20px;
+}
+
+.portal-stat {
+  padding: 20px;
+  border: 1px solid var(--auth-border);
+  border-radius: 14px;
+  background: var(--auth-bg-left);
+}
+
+.portal-stat strong {
+  display: block;
+  font-family: "Rajdhani", sans-serif;
+  font-size: 2.2rem;
+  line-height: 1.1;
+}
+
+.portal-stat span {
+  color: var(--auth-muted);
+  font-size: 0.85rem;
+}
+
+.portal-links {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 14px;
+}
+
+.portal-link-card {
+  display: block;
+  padding: 20px;
+  border: 1px solid var(--auth-border);
+  border-radius: 14px;
+  background: var(--auth-bg-left);
+  transition: border-color 0.15s, transform 0.15s;
+}
+
+.portal-link-card:hover {
+  border-color: var(--auth-orange);
+  transform: translateY(-2px);
+}
+
+.portal-link-card strong {
+  display: block;
+  margin-bottom: 4px;
+}
+
+.portal-link-card span {
+  color: var(--auth-muted);
+  font-size: 0.88rem;
+}
+
+.portal-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 18px 22px;
+}
+
+.portal-row > div {
+  flex: 1;
+  min-width: 0;
+}
+
+.portal-row .booking-title {
+  margin: 0 0 4px;
+}
+
+/* ---------- Admin tables ---------- */
+.portal-table-card {
+  padding: 20px;
+}
+
+.portal-table-wrap {
+  overflow-x: auto;
+}
+
+.portal-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.portal-table th,
+.portal-table td {
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--auth-border);
+  text-align: left;
+  white-space: nowrap;
+}
+
+.portal-table th {
+  color: var(--auth-muted);
+  font-size: 0.75rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.portal-table tbody tr:hover {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.portal-strong {
+  font-weight: 700;
+}
+
+.portal-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.portal-fill {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.portal-fill-bar {
+  width: 90px;
+  height: 6px;
+  overflow: hidden;
+  border-radius: 99px;
+  background: var(--auth-field);
+}
+
+.portal-fill-bar span {
+  display: block;
+  height: 100%;
+  background: var(--auth-orange);
+}
+
+.portal-fill small {
+  color: var(--auth-muted);
+}
+
+.portal-search {
+  width: 280px;
+  max-width: 100%;
+  padding: 10px 14px;
+  border: 1px solid var(--auth-border);
+  border-radius: 10px;
+  background: var(--auth-field);
+  color: var(--auth-text);
+}
+
+.portal-search:focus {
+  outline: 2px solid var(--auth-orange);
+  border-color: transparent;
+}
+
+@media (max-width: 860px) {
+  .portal-stats {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .portal-row {
+    flex-wrap: wrap;
+  }
+}
+
+/* Login menu next to "Explore arena" in the scrims / tournaments header */
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+@media (max-width: 700px) {
+  .header-actions .nav-cta {
+    display: none;
+  }
+}
+
+/* Keep the logo link only as wide as the logo on the login pages */
+.auth-hero .brand {
+  align-self: flex-start;
+}

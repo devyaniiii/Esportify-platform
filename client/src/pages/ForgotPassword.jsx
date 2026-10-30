@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import Logo from "../components/Logo.jsx";
 import "../styles/auth.css";
 
 // Strict rule: 8+ characters with small letter, capital letter, number and symbol
@@ -91,10 +92,7 @@ function ForgotPassword() {
   return (
     <div className="auth-page">
       <section className="auth-hero">
-        <div className="auth-brand">
-          <span className="auth-logo">E</span>
-          <span className="auth-brand-name">ESPORTIFY</span>
-        </div>
+        <Logo />
 
         <div>
           <h1 className="auth-headline">
@@ -132,7 +130,7 @@ function ForgotPassword() {
                   />
                   {errors.email && <span className="auth-error">{errors.email}</span>}
                   {errors.email && errors.email.startsWith("No account found") && (
-                    <Link to="/register" className="auth-register-btn">
+                    <Link to="/player/register" className="auth-register-btn">
                       Register a new account
                     </Link>
                   )}
@@ -226,7 +224,7 @@ function ForgotPassword() {
               <p className="dash-muted" style={{ marginBottom: 24 }}>
                 Your password was updated. Log in with your new password.
               </p>
-              <button type="button" className="auth-button" onClick={() => navigate("/login")}>
+              <button type="button" className="auth-button" onClick={() => navigate("/player/login")}>
                 Go to log in
               </button>
             </div>
@@ -234,7 +232,7 @@ function ForgotPassword() {
 
           {step !== 3 && (
             <p className="auth-switch">
-              Remember your password? <Link to="/login">Back to log in</Link>
+              Remember your password? <Link to="/player/login">Back to log in</Link>
             </p>
           )}
         </div>

@@ -1,13 +1,7 @@
 import { useState } from "react";
 import { Link, Navigate, useNavigate } from "react-router-dom";
+import { getCurrentPlayer, logoutPlayer, readUsers, saveUsers } from "../auth.js";
 import "../styles/auth.css";
-
-const readUsers = () => JSON.parse(localStorage.getItem("esportify_users") || "[]");
-const getCurrentUser = () => {
-  const email =
-    sessionStorage.getItem("esportify_current") || localStorage.getItem("esportify_current");
-  return readUsers().find((u) => u.email === email) || null;
-};
 
 const rows = [
   ["In-game name", "username", "text"],
@@ -20,14 +14,14 @@ const rows = [
 
 function Profile() {
   const navigate = useNavigate();
-  const [user, setUser] = useState(getCurrentUser);
+  const [user, setUser] = useState(getCurrentPlayer);
   const [draft, setDraft] = useState({});
   const [editing, setEditing] = useState(false);
   const [errors, setErrors] = useState({});
   const [message, setMessage] = useState("");
 
   // Not logged in: send the visitor to the login page.
-  if (!user) return <Navigate to="/login" replace />;
+  if (!user) return <Navigate to="/player/login" replace />;
 
   const bookings = JSON.parse(localStorage.getItem(`esportify_bookings_${user.email}`) || "[]");
   const active = bookings.filter((b) => b.status === "Confirmed" || b.status === "Pending").length;
@@ -56,19 +50,15 @@ function Profile() {
 
     // TODO: send PUT /api/users/me to the backend here
     const updated = { ...user, ...draft, username: draft.username.trim() };
-    localStorage.setItem(
-      "esportify_users",
-      JSON.stringify(readUsers().map((u) => (u.email === user.email ? updated : u)))
-    );
+    saveUsers(readUsers().map((u) => (u.email === user.email ? updated : u)));
     setUser(updated);
     setEditing(false);
     setMessage("Profile saved.");
   };
 
   const logout = () => {
-    localStorage.removeItem("esportify_current");
-    sessionStorage.removeItem("esportify_current");
-    navigate("/login");
+    logoutPlayer();
+    navigate("/");
   };
 
   return (
@@ -80,6 +70,7 @@ function Profile() {
             <p className="dash-subtitle">Your player details used for scrims and tournament slots.</p>
           </div>
           <div className="dash-actions dash-actions-top">
+            <Link to="/player/dashboard" className="dash-btn dash-btn-ghost">Dashboard</Link>
             <Link to="/my-bookings" className="dash-btn dash-btn-ghost">My bookings</Link>
             <button type="button" className="dash-btn dash-btn-danger" onClick={logout}>Log out</button>
           </div>
@@ -92,7 +83,7 @@ function Profile() {
             <div className="dash-avatar">{user.username.charAt(0).toUpperCase()}</div>
             <h2 className="dash-name">{user.username}</h2>
             <p className="dash-muted">BGMI ID {user.bgmiId}</p>
-            <span className="dash-badge dash-badge-orange">{user.accountType === "admin" ? "Admin" : "Player"}</span>
+            <span className="dash-badge dash-badge-orange">Player</span>
 
             <div className="dash-stats">
               <div className="dash-stat"><strong>{bookings.length}</strong><span>Bookings</span></div>

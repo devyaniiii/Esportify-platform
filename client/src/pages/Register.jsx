@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, NavLink, useNavigate } from "react-router-dom";
+import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import "../styles/auth.css";
 
 const lobbies = [
@@ -34,6 +34,7 @@ const passwordError = (pw) => {
 
 function Register() {
   const navigate = useNavigate();
+  const location = useLocation();
   const [role, setRole] = useState("player");
   const [form, setForm] = useState(initialForm);
   const [errors, setErrors] = useState({});
@@ -91,8 +92,14 @@ function Register() {
       localStorage.removeItem("esportify_current");
       sessionStorage.removeItem("esportify_current");
       localStorage.setItem("esportify_current", email);
-      // TODO: when the admin dashboard is ready, send admins to "/admin" instead.
-      navigate(role === "admin" ? "/profile" : "/my-bookings");
+      // Return users to the booking flow they requested before registering.
+      const returnTo = location.state?.from;
+      const event = location.state?.event;
+      if (returnTo) {
+        navigate(returnTo, { replace: true, state: event ? { event } : undefined });
+      } else {
+        navigate(role === "admin" ? "/profile" : "/my-bookings");
+      }
     }, 700);
   };
 
@@ -205,7 +212,7 @@ function Register() {
           <p className="auth-switch">
             Already have an account? <Link to="/login">Log in</Link>
           </p>
-        </div>
+        </div><q></q>
       </section>
     </div>
   );

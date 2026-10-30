@@ -1,13 +1,7 @@
 import { useState } from "react";
 import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
+import { getCurrentPlayer } from "../auth.js";
 import "../styles/auth.css";
-
-const getCurrentUser = () => {
-  const email =
-    sessionStorage.getItem("esportify_current") || localStorage.getItem("esportify_current");
-  const users = JSON.parse(localStorage.getItem("esportify_users") || "[]");
-  return users.find((u) => u.email === email) || null;
-};
 
 // Sample events. Replace with GET /api/events once the backend is ready.
 const events = [
@@ -29,7 +23,7 @@ const emptyPlayer = { name: "", bgmiId: "" };
 function TeamRegistration() {
   const navigate = useNavigate();
   const location = useLocation();
-  const user = getCurrentUser();
+  const user = getCurrentPlayer();
 
   // The tournaments page can send the chosen event like this:
   // navigate("/team-registration", { state: { event: { title, type, date, time, fee } } })
@@ -52,7 +46,15 @@ function TeamRegistration() {
   const [players, setPlayers] = useState([emptyPlayer, emptyPlayer, emptyPlayer]);
   const [errors, setErrors] = useState({});
 
-  if (!user) return <Navigate to="/login" replace />;
+  if (!user) {
+    return (
+      <Navigate
+        to="/player/login"
+        replace
+        state={{ from: "/team-registration", event: passed }}
+      />
+    );
+  }
 
   const event = allEvents.find((e) => e.id === eventId) || allEvents[0];
   const isSolo = mode === "solo";
